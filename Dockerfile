@@ -37,8 +37,6 @@ ENV SESSION_DRIVER=array
 ENV VIEW_COMPILED_PATH=/tmp
 ENV CACHE_DRIVER=array
 
-# ✅ تمت الإضافة: تنظيف الكاش قبل التشغيل لضمان عمل التطبيق
-RUN php artisan config:clear && php artisan cache:clear && php artisan view:clear
 
 # فتح المنفذ 8080
 EXPOSE 8080
