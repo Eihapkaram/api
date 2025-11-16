@@ -26,20 +26,22 @@ RUN composer install --no-dev --no-interaction --optimize-autoloader
 # صلاحيات مجلدات التخزين والcache
 RUN mkdir -p storage/framework/cache storage/logs && chmod -R 775 storage bootstrap/cache
 
-# ✅ تمت الإضافة: تأكيد إنشاء باقي مجلدات Laravel المطلوبة
+# إنشاء باقي المجلدات المطلوبة
 RUN mkdir -p storage/framework/sessions \
     && mkdir -p storage/framework/views \
     && mkdir -p storage/framework/cache \
     && chmod -R 775 storage bootstrap/cache
 
-# ✅ تمت الإضافة: إعداد متغيرات بيئة لتفادي مشاكل التخزين في منصات مثل Railway
+# إعداد متغيرات بيئة
 ENV SESSION_DRIVER=array
 ENV VIEW_COMPILED_PATH=/tmp
 ENV CACHE_DRIVER=array
 
-
-# فتح المنفذ 8080
+# فتح المنفذ
 EXPOSE 8080
 
-# تشغيل Laravel
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8080"]
+# تشغيل Laravel مع تنظيف الكاش وقت التشغيل وليس وقت البناء
+CMD php artisan config:clear && \
+    php artisan view:clear && \
+    php artisan cache:clear && \
+    php artisan serve --host=0.0.0.0 --port=8080
